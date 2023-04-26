@@ -1,0 +1,58 @@
+---
+title: "ProyectoTD2023"
+author: "ProyectoTD Grupo B"
+date: "2023-04-26"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+CARGA DE LIBRERIAS
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+rm(list=ls())
+```
+
+CREACION DE LAS RUTAS DE LOS FICHEROS.
+
+```{r}
+ruta1<- "data/1059xlxveei79_ECGf2/27_09_2022"
+ruta2<-"data/0519xxxiii14/06_02_2023"
+ruta3<- "data/0795xalvii8a7/27_09_2022"
+ruta4<- "data/ecg5_210xlxi81_IP_39_eBR_BRP_720"
+
+rutas<- c(ruta1,ruta2,ruta3,ruta4)
+poner_horas <- function(x){
+  horas <-list.dirs(x, recursive = FALSE)
+  return(horas)
+}
+poner_ficheros <- function(x,y){
+  ruta_analogica <- file.path(x[1], y[3])
+  ruta_canalogica <- file.path(x[1], y[1])
+  ruta_digital <-  file.path(x[1], y[4])
+  ruta_cdigital <- file.path(x[1], y[2])
+  return(c(ruta_analogica, ruta_canalogica, ruta_digital, ruta_cdigital))
+}
+horas <-c()
+for (i in rutas){
+  a <- poner_horas(i)
+  horas<- c(horas,a)
+}
+
+ficheros <- list.files(horas[1])
+
+rutas_completas <- c()
+for (i in seq_along(horas)) {
+  res <- poner_ficheros(horas[i], ficheros)
+  rutas_completas <- c(rutas_completas, res)
+}
+rutas_completas <- head(rutas_completas,-4)
+
+```
