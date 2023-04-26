@@ -56,3 +56,96 @@ for (i in seq_along(horas)) {
 rutas_completas <- head(rutas_completas,-4)
 
 ```
+
+NUMERO DE LECTURAS QUE HABRÁ QUE HACER EN CADA FICHERO ANALOGICO:
+```{r}
+lecturas <- c()
+for (i in seq(from = 1, to = length(rutas_completas), by = 4)) {
+  info_fichero <- file.info(rutas_completas[i])
+  tamanio_fichero <- info_fichero$size
+  numero <- tamanio_fichero/2
+  lecturas <- c(lecturas, numero)
+}
+  
+
+```
+
+
+NUMERO DE LECTURAS QUE HABRÁ QUE HACER EN CADA FICHERO DIGITAL:
+```{r}
+lecturas_d <- c()
+for (i in seq(from = 3, to = length(rutas_completas), by = 4)) {
+  info_fichero <- file.info(rutas_completas[i])
+  numero <- info_fichero$size
+  lecturas_d <- c(lecturas_d, numero)
+}
+
+```
+
+LECTURAS DE LOS FICHEROS
+
+```{r}
+info_fichero <- file.info(rutas_completas[1])
+tamanio_fichero <- info_fichero$size
+numero <- tamanio_fichero/2
+
+#FICHEROS ANALOGICOS
+An1<- readBin(con = rutas_completas[1], signed=T, what= integer(), size=2,n=lecturas[1])
+An2<- readBin(con = rutas_completas[5], signed=T, what= integer(), size=2,n=lecturas[2])
+An3<- readBin(con = rutas_completas[9], signed=T, what= integer(), size=2,n=lecturas[3])
+An4<- readBin(con = rutas_completas[13], signed=T, what= integer(), size=2,n=lecturas[4])
+An5<- readBin(con = rutas_completas[17], signed=T, what= integer(), size=2,n=lecturas[5])
+An6<- readBin(con = rutas_completas[21], signed=T, what= integer(), size=2,n=lecturas[6])
+#CABECERAS FICHEROS ANALOGICOS PARTE 1/3
+Can1 <- readBin(con = rutas_completas[2], signed=F, what= integer(), size=1, n=7)
+Can2 <- readBin(con = rutas_completas[6], signed=F, what= integer(), size=1, n=7)
+Can3 <- readBin(con = rutas_completas[10], signed=F, what= integer(), size=1, n=7)
+Can4 <- readBin(con = rutas_completas[14], signed=F, what= integer(), size=1, n=7)
+Can5 <- readBin(con = rutas_completas[18], signed=F, what= integer(), size=1, n=7)
+Can6 <- readBin(con = rutas_completas[22], signed=F, what= integer(), size=1, n=7)
+#CABECERAS FICHEROS ANALOGICOS PARTE 2/3
+aux1 <- file(rutas_completas[2],'rb')
+aux2 <- file(rutas_completas[6],'rb')
+aux3 <- file(rutas_completas[10],'rb')
+aux4 <- file(rutas_completas[14],'rb')
+aux5 <- file(rutas_completas[18],'rb')
+aux6 <- file(rutas_completas[22],'rb')
+seek(aux1, 7)
+seek(aux2, 7)
+seek(aux3, 7)
+seek(aux4, 7)
+seek(aux5, 7)
+seek(aux6, 7)
+
+Can1_2 <- readBin(con = aux1, signed=T, what= integer(), size=2, n=3)
+Can2_2 <- readBin(con = aux2, signed=T, what= integer(), size=2, n=3)
+Can3_2 <- readBin(con = aux3, signed=T, what= integer(), size=2, n=3)
+Can4_2 <- readBin(con = aux4, signed=T, what= integer(), size=2, n=3)
+Can5_2 <- readBin(con = aux5, signed=T, what= integer(), size=2, n=3)
+Can6_2 <- readBin(con = aux6, signed=T, what= integer(), size=2, n=3)
+#CABECERAS FICHEROS ANALOGICOS PARTE 3/3
+
+Can1 <- c(Can1,Can1_2)
+Can2 <- c(Can2,Can2_2)
+Can3 <- c(Can3,Can3_2)
+Can4 <- c(Can4,Can4_2)
+Can5 <- c(Can5,Can5_2)
+Can6 <- c(Can6,Can6_2)
+
+#FICHEROS DIGITALES
+Dig1 <- readBin(con = rutas_completas[3], signed=F, what= integer(), size=1, n=lecturas_d[1])
+Dig2 <- readBin(con = rutas_completas[7], signed=F, what= integer(), size=1, n=lecturas_d[2])
+Dig3 <- readBin(con = rutas_completas[11], signed=F, what= integer(), size=1, n=lecturas_d[3])
+Dig4 <- readBin(con = rutas_completas[15], signed=F, what= integer(), size=1, n=lecturas_d[4])
+Dig5 <- readBin(con = rutas_completas[19], signed=F, what= integer(), size=1, n=lecturas_d[5])
+Dig6 <- readBin(con = rutas_completas[23], signed=F, what= integer(), size=1, n=lecturas_d[6])
+
+#CABECERAS FICHEROS DIGITALES
+Cdig1 <- readBin(con = rutas_completas[4], signed=F, what= integer(), size=1, n=8)
+Cdig2 <- readBin(con = rutas_completas[8], signed=F, what= integer(), size=1, n=8)
+Cdig3 <- readBin(con = rutas_completas[12], signed=F, what= integer(), size=1, n=8)
+Cdig4 <- readBin(con = rutas_completas[16], signed=F, what= integer(), size=1, n=8)
+Cdig5 <- readBin(con = rutas_completas[20], signed=F, what= integer(), size=1, n=8)
+Cdig6 <- readBin(con = rutas_completas[24], signed=F, what= integer(), size=1, n=8)
+
+``` 
