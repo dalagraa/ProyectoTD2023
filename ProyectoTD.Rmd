@@ -149,3 +149,44 @@ Cdig5 <- readBin(con = rutas_completas[20], signed=F, what= integer(), size=1, n
 Cdig6 <- readBin(con = rutas_completas[24], signed=F, what= integer(), size=1, n=8)
 
 ``` 
+CREACIÓN DE LOS DATA FRAME CON LA INFORMACIÓN DEL FICHERO DIGITAL.
+```{r}
+crear_df_digital <- function(x){
+  HR1 <- x[seq(from = 1, to = length(x), by = 9)][1:1300]
+  HR2 <- x[seq(from = 2, to = length(x), by = 9)][1:1300]
+  MHR <- x[seq(from = 3, to = length(x), by = 9)][1:1300]
+  MSpo2 <- x[seq(from = 5, to = length(x), by = 9)][1:1300]
+  Pdiastolica <- x[seq(from = 8, to = length(x), by = 9)][1:1300]
+  Pmedia <- x[seq(from = 9, to = length(x), by = 9)][1:1300]
+  Psistolica <- x[seq(from = 7, to = length(x), by = 9)][1:1300]
+  TOCO <- x[seq(from = 4, to = length(x), by = 9)][1:1300]
+  VCP <- x[seq(from = 6, to = length(x), by = 9)][1:1300]
+  
+  time <- seq(0,1299,1)/4
+  df <- data.frame(HR1,HR2,MHR,MSpo2,Pdiastolica,Pmedia,Psistolica,TOCO,VCP,time)
+  df <- gather(df, key = "variable", value = "value", -time)
+  return(df)
+}
+
+Dig1<-crear_df_digital(Dig1)
+Dig2<-crear_df_digital(Dig2)
+Dig3<-crear_df_digital(Dig3)
+Dig4<-crear_df_digital(Dig4)
+Dig5<-crear_df_digital(Dig5)
+Dig6<-crear_df_digital(Dig6)
+
+
+```
+
+GRAFICA DEL EJEMPLO
+```{r}
+
+ult_An <- tail(An1, n = 10000)
+t <- 1:length(An1)
+ult_t <- tail(t/1000, n = 10000)
+plot(ult_t, ult_An, ylim = c(-300,1000), xlab = "Tiempo(s)", ylab = "Frecuencia(Hz)",type = "l", col = "blue", lwd = 2)
+grid(nx = NULL, ny = NULL,
+    lty = 2, col = "gray", lwd = 1)
+abline(h = 
+         , col = "black", lty = 2)
+``` 
