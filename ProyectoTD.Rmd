@@ -190,3 +190,10 @@ grid(nx = NULL, ny = NULL,
 abline(h = 
          , col = "black", lty = 2)
 ``` 
+
+```{r}
+ggplot(Dig1, aes(x = time, y = value)) + 
+  geom_line()+
+  facet_wrap(~ variable, scales = "free_y")
+```
+
