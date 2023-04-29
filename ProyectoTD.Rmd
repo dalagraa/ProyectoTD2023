@@ -194,6 +194,21 @@ abline(h =
 ```{r}
 ggplot(Dig1, aes(x = time, y = value)) + 
   geom_line()+ 
-  facet_wrap(~ variable, scales = "free_y")
+  facet_wrap(~ variable, scales = "free_y") 
+``` 
+
+```{r}
+valores_faltantes <- c(sum(is.na(An1)), sum(is.na(Dig1)))
+
+
+hist(valores_faltantes, breaks = 2, xlab = "Ficheros",
+     main = "Datos faltantes",
+     ylab = "Cantidad",
+     col = "blue", border = "black",
+     ylim = c(0,10))
+legend("topright",
+       legend = c("An1","Dig1"),
+       fill = c("blue", "red"))
 ```
+
 
