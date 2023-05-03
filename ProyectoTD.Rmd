@@ -14,6 +14,8 @@ CARGA DE LIBRERIAS
 
 ```{r}
 library(tidyverse)
+library(mice)
+library(naniar)
 ```
 
 ```{r}
@@ -152,19 +154,16 @@ Cdig6 <- readBin(con = rutas_completas[24], signed=F, what= integer(), size=1, n
 CREACIÓN DE LOS DATA FRAME CON LA INFORMACIÓN DEL FICHERO DIGITAL.
 ```{r}
 crear_df_digital <- function(x){
-  HR1 <- x[seq(from = 1, to = length(x), by = 9)][1:1300]
-  HR2 <- x[seq(from = 2, to = length(x), by = 9)][1:1300]
-  MHR <- x[seq(from = 3, to = length(x), by = 9)][1:1300]
-  MSpo2 <- x[seq(from = 5, to = length(x), by = 9)][1:1300]
-  Pdiastolica <- x[seq(from = 8, to = length(x), by = 9)][1:1300]
-  Pmedia <- x[seq(from = 9, to = length(x), by = 9)][1:1300]
-  Psistolica <- x[seq(from = 7, to = length(x), by = 9)][1:1300]
-  TOCO <- x[seq(from = 4, to = length(x), by = 9)][1:1300]
-  VCP <- x[seq(from = 6, to = length(x), by = 9)][1:1300]
-  
-  time <- seq(0,1299,1)/4
-  df <- data.frame(HR1,HR2,MHR,MSpo2,Pdiastolica,Pmedia,Psistolica,TOCO,VCP,time)
-  df <- gather(df, key = "variable", value = "value", -time)
+  HR1 <- x[seq(from = 1, to = length(x), by = 9)]
+  HR2 <- x[seq(from = 2, to = length(x), by = 9)]
+  MHR <- x[seq(from = 3, to = length(x), by = 9)]
+  TOCO <- x[seq(from = 4, to = length(x), by = 9)]
+  SPO2 <- x[seq(from = 5, to = length(x), by = 9)]
+  VCP <- x[seq(from = 6, to = length(x), by = 9)]
+  PSI <- x[seq(from = 7, to = length(x), by = 9)]
+  PDI <- x[seq(from = 8, to = length(x), by = 9)]
+  PME <- x[seq(from = 9, to = length(x), by = 9)]
+  df <- data.frame(HR1,HR2,MHR,TOCO,SPO2,VCP,PSI,PDI,PME)
   return(df)
 }
 
@@ -192,7 +191,26 @@ abline(h =
 ``` 
 
 ```{r}
-ggplot(Dig1, aes(x = time, y = value)) + 
+Data_frame_largo <- function(x){
+  L <- x%>%
+    pivot_longer(cols= HR1:PME, names_to = "variable")
+  L <- L%>%
+      mutate(time = seq(1/9, nrow(L)/9, by= 1/9))
+  return(L)
+}
+
+Dig1_L <- Data_frame_largo(Dig1)
+Dig2_L <- Data_frame_largo(Dig2)
+Dig3_L <- Data_frame_largo(Dig3)
+Dig4_L <- Data_frame_largo(Dig4)
+Dig5_L <- Data_frame_largo(Dig5)
+Dig6_L <- Data_frame_largo(Dig6)  
+
+         
+ggplot(Dig1_L, aes(x = time, y = value)) + 
+  geom_line()+ 
+  facet_wrap(~ variable, scales = "free_y") 
+ggplot(Dig2_L, aes(x = time, y = value)) + 
   geom_line()+ 
   facet_wrap(~ variable, scales = "free_y") 
 ``` 
