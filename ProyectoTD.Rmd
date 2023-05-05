@@ -215,18 +215,57 @@ ggplot(Dig2_L, aes(x = time, y = value)) +
   facet_wrap(~ variable, scales = "free_y") 
 ``` 
 
+GRAFICAS DE CADA FICHERO DIGITAL 
 ```{r}
-valores_faltantes <- c(sum(is.na(An1)), sum(is.na(Dig1)))
+ggplot(Dig1_L, aes(x = time, y = value)) + 
+  geom_line()+ 
+  facet_wrap(~ variable, scales = "free_y") 
+ggplot(Dig2_L, aes(x = time, y = value)) + 
+  geom_line()+ 
+  facet_wrap(~ variable, scales = "free_y") 
+#PODEMOS OBSERVAR QUE NO HAY VALORES DE HR2 PARA EL SEGUNDO FICHERO DIGITAL
+
+ggplot(Dig3_L, aes(x = time, y = value)) + 
+  geom_line()+ 
+  facet_wrap(~ variable, scales = "free_y")
+#EL TERCER FICHERO DIGITAL SOLO TIENE INFORMACIÓN DE HR1 Y TOCO
+
+ggplot(Dig4_L, aes(x = time, y = value)) + 
+  geom_line()+ 
+  facet_wrap(~ variable, scales = "free_y")
+#EL CUARTO FICHERO DIGITAL SOLO TIENE INFORMACIÓN DE HR1, TOCO Y VCP
+ggplot(Dig5_L, aes(x = time, y = value)) + 
+  geom_line()+ 
+  facet_wrap(~ variable, scales = "free_y")
+#EL QUINTO FICHERO DIGITAL NO TIENE INFORMACIÓN DE PDI, PME Y PSI
+
+ggplot(Dig6_L, aes(x = time, y = value)) + 
+  geom_line()+ 
+  facet_wrap(~ variable, scales = "free_y")
+#EL SEXTO FICHERO DIGITAL NO TIENE INFORMACIÓN DE PDI, PME, PSI Y SPO2
+
+```
 
 
-hist(valores_faltantes, breaks = 2, xlab = "Ficheros",
-     main = "Datos faltantes",
-     ylab = "Cantidad",
-     col = "blue", border = "black",
-     ylim = c(0,10))
-legend("topright",
-       legend = c("An1","Dig1"),
-       fill = c("blue", "red"))
+```{r}
+sum(is.na(An1))
+sum(is.na(An2))
+sum(is.na(An3))
+sum(is.na(An4))
+sum(is.na(An5))
+sum(is.na(An6))
+
+
+gg_miss_var(Dig1)
+gg_miss_var(Dig2)
+gg_miss_var(Dig3)
+gg_miss_var(Dig4)
+gg_miss_var(Dig5)
+gg_miss_var(Dig6)
+
+#NO HAY VALORES FALTANTES EN NINGÚN FICHERO DIGITAL NI ANALÓGICO.
+
+
 ```
 
 
