@@ -16,6 +16,7 @@ CARGA DE LIBRERIAS
 library(tidyverse)
 library(mice)
 library(naniar)
+library(plotly)
 ```
 
 ```{r}
@@ -188,6 +189,20 @@ grid(nx = NULL, ny = NULL,
     lty = 2, col = "gray", lwd = 1)
 abline(h = 
          , col = "black", lty = 2)
+
+
+ult_An <- tail(An1, n = 10000)
+t <- 1:length(An1)
+ult_t <- tail(t/1000, n = 10000)
+
+p <- ggplot(data = data.frame(x = ult_t, y = ult_An), aes(x = x, y = y)) + 
+  geom_line(color = "blue", size =0.5) +
+  labs(x = "Tiempo(s)", y = "Frecuencia(Hz)") +
+  ylim(-300, 1000) +
+  theme_gray() +
+  theme(panel.grid.major = element_line(linetype = "dashed", color = "gray", size = 1))
+
+ggplotly(p)
 ``` 
 
 ```{r}
