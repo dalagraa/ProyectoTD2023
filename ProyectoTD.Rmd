@@ -180,16 +180,8 @@ Dig6<-crear_df_digital(Dig6)
 
 GRAFICA DEL EJEMPLO
 ```{r}
-
-ult_An <- tail(An1, n = 10000)
-t <- 1:length(An1)
-ult_t <- tail(t/1000, n = 10000)
-plot(ult_t, ult_An, ylim = c(-300,1000), xlab = "Tiempo(s)", ylab = "Frecuencia(Hz)",type = "l", col = "blue", lwd = 2)
-grid(nx = NULL, ny = NULL,
-    lty = 2, col = "gray", lwd = 1)
-abline(h = 
-         , col = "black", lty = 2)
-
+library(ggplot2)
+library(plotly)
 
 ult_An <- tail(An1, n = 10000)
 t <- 1:length(An1)
@@ -201,6 +193,19 @@ p <- ggplot(data = data.frame(x = ult_t, y = ult_An), aes(x = x, y = y)) +
   ylim(-300, 1000) +
   theme_gray() +
   theme(panel.grid.major = element_line(linetype = "dashed", color = "gray", size = 1))
+
+ggplotly(p)
+
+ult_An <- tail(An1, n = 10000)
+t <- 1:length(An1)
+ult_t <- tail(t/1000, n = 10000)
+plot(ult_t, ult_An, ylim = c(-300,1000), xlab = "Tiempo(s)", ylab = "Frecuencia(Hz)",type = "l", col = "blue", lwd = 2)
+grid(nx = NULL, ny = NULL,
+    lty = 2, col = "gray", lwd = 1)
+abline(h = 
+         , col = "black", lty = 2)
+
+
 
 ggplotly(p)
 #Gráfica interactiva
