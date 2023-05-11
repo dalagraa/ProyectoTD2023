@@ -16,7 +16,7 @@ CARGA DE LIBRERIAS
 library(tidyverse)
 library(mice)
 library(naniar)
-library(plotly)
+library(plotly) 
 ```
 
 ```{r}
@@ -203,6 +203,7 @@ p <- ggplot(data = data.frame(x = ult_t, y = ult_An), aes(x = x, y = y)) +
   theme(panel.grid.major = element_line(linetype = "dashed", color = "gray", size = 1))
 
 ggplotly(p)
+#Gráfica interactiva
 ``` 
 
 ```{r}
