@@ -320,13 +320,13 @@ Dig1$HR1[outliers1] <- NA
 Dig1$HR1 <- na.locf(Dig1$HR1)
 Dig2$HR1[outliers2] <- NA
 Dig2$HR1 <- na.locf(Dig2$HR1)
-Dig3$HR1[outliers1] <- NA
+Dig3$HR1[outliers3] <- NA
 Dig3$HR1 <- na.locf(Dig3$HR1)
-Dig4$HR1[outliers2] <- NA
+Dig4$HR1[outliers4] <- NA
 Dig4$HR1 <- na.locf(Dig4$HR1)
-Dig5$HR1[outliers1] <- NA
+Dig5$HR1[outliers5] <- NA
 Dig5$HR1 <- na.locf(Dig5$HR1)
-Dig6$HR1[outliers2] <- NA
+Dig6$HR1[outliers6] <- NA
 Dig6$HR1 <- na.locf(Dig6$HR1)
 
 
