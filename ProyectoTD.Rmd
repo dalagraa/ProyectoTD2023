@@ -17,6 +17,9 @@ library(tidyverse)
 library(mice)
 library(naniar)
 library(plotly) 
+library(webshot)
+library(zoo)
+
 ```
 
 ```{r}
@@ -208,7 +211,9 @@ abline(h =
 
 
 ggplotly(p)
+
 #Gráfica interactiva
+
 ``` 
 
 ```{r}
@@ -289,4 +294,68 @@ gg_miss_var(Dig6)
 
 ```
 
+
+
+COMPROBACIÓN DE OUTLIERS
+```{r}
+reglaboxplot <- function(x) {
+  xs <- quantile(x, probs = 0.75,na.rm=T)
+  xi <- quantile(x, probs = 0.25,na.rm=T)
+  IQR <- xs - xi
+  up <- xs + 1.5 * IQR
+  low <- xi - 1.5 * IQR
+  outliers <- x < low | x > up
+  return(outliers)
+}
+
+#SUSTITUCIÓN DE LOS OUTLIERS EN HR1 POR LA REGLA DEL VECINO MÁS PROXIMO
+outliers1 <- reglaboxplot(Dig1$HR1)
+outliers2 <- reglaboxplot(Dig2$HR1)
+outliers3 <- reglaboxplot(Dig3$HR1)
+outliers4 <- reglaboxplot(Dig4$HR1)
+outliers5 <- reglaboxplot(Dig5$HR1)
+outliers6 <- reglaboxplot(Dig6$HR1)
+
+Dig1$HR1[outliers1] <- NA
+Dig1$HR1 <- na.locf(Dig1$HR1)
+Dig2$HR1[outliers2] <- NA
+Dig2$HR1 <- na.locf(Dig2$HR1)
+Dig3$HR1[outliers1] <- NA
+Dig3$HR1 <- na.locf(Dig3$HR1)
+Dig4$HR1[outliers2] <- NA
+Dig4$HR1 <- na.locf(Dig4$HR1)
+Dig5$HR1[outliers1] <- NA
+Dig5$HR1 <- na.locf(Dig5$HR1)
+Dig6$HR1[outliers2] <- NA
+Dig6$HR1 <- na.locf(Dig6$HR1)
+
+
+
+Anadir_tiempo<- function(x){
+  Time <- c(1:nrow(x))
+  x <- cbind(x,Time)
+  return(x)
+}
+Dig1 <- Anadir_tiempo(Dig1)
+Dig2 <- Anadir_tiempo(Dig2)
+Dig3 <- Anadir_tiempo(Dig3)
+Dig4 <- Anadir_tiempo(Dig4)
+Dig5 <- Anadir_tiempo(Dig5)
+Dig6 <- Anadir_tiempo(Dig6)
+
+
+ggplot(Dig1, aes(x=Time, y= HR1))+
+  geom_line()
+ggplot(Dig2, aes(x=Time, y= HR1))+
+  geom_line()
+ggplot(Dig3, aes(x=Time, y= HR1))+
+  geom_line()
+ggplot(Dig4, aes(x=Time, y= HR1))+
+  geom_line()
+ggplot(Dig5, aes(x=Time, y= HR1))+
+  geom_line()
+ggplot(Dig6, aes(x=Time, y= HR1))+
+  geom_line()
+
+```
 
