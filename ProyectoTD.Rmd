@@ -295,8 +295,8 @@ gg_miss_var(Dig6)
 ```
 
 
-
-COMPROBACIÓN DE OUTLIERS
+ 
+COMPROBACIÓN DE OUTLIERS HR1
 ```{r}
 reglaboxplot <- function(x) {
   xs <- quantile(x, probs = 0.75,na.rm=T)
@@ -308,7 +308,9 @@ reglaboxplot <- function(x) {
   return(outliers)
 }
 
-#SUSTITUCIÓN DE LOS OUTLIERS EN HR1 POR LA REGLA DEL VECINO MÁS PROXIMO
+#SUSTITUCIÓN DE LOS OUTLIERS EN HR1 POR LA REGLA DEL VECINO MÁS PROXIMO EN HR1
+#Primero se comprueban los outliers según la regla boxplot que considera como
+#outliers Valores por encima de  Xu+1.5IQR o por debajo de Xi-1.5IQR
 outliers1 <- reglaboxplot(Dig1$HR1)
 outliers2 <- reglaboxplot(Dig2$HR1)
 outliers3 <- reglaboxplot(Dig3$HR1)
@@ -356,6 +358,100 @@ ggplot(Dig5, aes(x=Time, y= HR1))+
   geom_line()
 ggplot(Dig6, aes(x=Time, y= HR1))+
   geom_line()
+ #El paciente ecg5_210xlxi81_IP_39_eBR_BRP_720 sigue teniendo valores muy bajos
+```
 
+
+COMPROBACIÓN DE OUTLIERS HR2
+```{r}
+#SUSTITUCIÓN DE LOS OUTLIERS EN HR1 POR LA REGLA DEL VECINO MÁS PROXIMO EN HR1
+#Primero se comprueban los outliers según la regla boxplot que considera como
+#outliers Valores por encima de  Xu+1.5IQR o por debajo de Xi-1.5IQR
+outliers1 <- reglaboxplot(Dig1$HR2)
+outliers5 <- reglaboxplot(Dig5$HR2)
+outliers6 <- reglaboxplot(Dig6$HR2)
+
+Dig1$HR2[outliers1] <- NA
+Dig1$HR2 <- na.locf(Dig1$HR2)
+
+ #No tiene sentido hacerlo para el 2 3 y 4 ya que no tienen ni un valor.
+
+Dig5$HR2[outliers5] <- NA
+Dig5$HR2 <- na.fill(Dig5$HR2, fill = "extend")
+Dig6$HR2[outliers6] <- NA
+Dig6$HR2 <- na.locf(Dig6$HR2)
+
+
+ggplot(Dig1, aes(x=Time, y= HR2))+
+  geom_line()
+ggplot(Dig5, aes(x=Time, y= HR2))+
+  geom_line()
+ggplot(Dig6, aes(x=Time, y= HR2))+
+  geom_line()
+ #El paciente ecg5_210xlxi81_IP_39_eBR_BRP_720 sigue teniendo valores muy bajos
+
+```
+
+
+COMPROBACION DE OUTLIERS MHR
+```{r}
+outliers1 <- reglaboxplot(Dig1$MHR)
+outliers2 <- reglaboxplot(Dig2$MHR)
+outliers5 <- reglaboxplot(Dig5$MHR)
+outliers6 <- reglaboxplot(Dig6$MHR)
+
+Dig1$MHR[outliers1] <- NA
+Dig1$MHR <- na.locf(Dig1$MHR)
+Dig2$MHR[outliers2] <- NA
+Dig2$MHR <- na.locf(Dig2$MHR)
+Dig5$MHR[outliers5] <- NA
+Dig5$MHR <- na.fill(Dig5$MHR, fill = "extend")
+Dig6$MHR[outliers6] <- NA
+Dig6$MHR <- na.locf(Dig6$MHR)
+
+ggplot(Dig1, aes(x=Time, y= MHR))+
+  geom_line()
+ggplot(Dig2, aes(x=Time, y= MHR))+
+  geom_line()
+ggplot(Dig5, aes(x=Time, y= MHR))+
+  geom_line()
+ggplot(Dig6, aes(x=Time, y= MHR))+
+  geom_line()
+
+```
+
+
+COMPARACIÓN DE LOS PULSOS MADRE E HIJO
+```{r}
+ggplot(Dig1, aes(x = Time)) +
+  geom_line(aes(y = HR1, color = "Feto")) +
+  geom_line(aes(y = MHR, color = "Madre")) +
+  scale_color_manual(values = c("Feto" = "red", "Madre" = "blue")) +
+  ggtitle("Comparación ritmo cardíaco madre/hijo") +
+  ylab("Ritmo Cardíaco")
+
+ggplot(Dig2, aes(x = Time)) +
+  geom_line(aes(y = HR1, color = "Feto")) +
+  geom_line(aes(y = MHR, color = "Madre")) +
+  scale_color_manual(values = c("Feto" = "red", "Madre" = "blue")) +
+  ggtitle("Comparación ritmo cardíaco madre/hijo") +
+  ylab("Ritmo Cardíaco")
+
+ggplot(Dig5, aes(x = Time)) +
+  geom_line(aes(y = HR1, color = "Feto")) +
+  geom_line(aes(y = MHR, color = "Madre")) +
+  scale_color_manual(values = c("Feto" = "red", "Madre" = "blue")) +
+  ggtitle("Comparación ritmo cardíaco madre/hijo") +
+  ylab("Ritmo Cardíaco")
+
+ggplot(Dig6, aes(x = Time)) +
+  geom_line(aes(y = HR1, color = "Feto")) +
+  geom_line(aes(y = MHR, color = "Madre")) +
+  scale_color_manual(values = c("Feto" = "red", "Madre" = "blue")) +
+  ggtitle("Comparación ritmo cardíaco madre/hijo") +
+  ylab("Ritmo Cardíaco")
+
+#Como se puede comprobar el ritmo cardiaco del feto es ampliamente superior en
+#la mayoría de los casos al de la madre.
 ```
 
