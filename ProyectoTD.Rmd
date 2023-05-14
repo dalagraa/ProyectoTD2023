@@ -19,7 +19,7 @@ library(naniar)
 library(plotly) 
 library(webshot)
 library(zoo)
-
+library(corrplot)
 ```
 
 ```{r}
@@ -387,6 +387,13 @@ ggplot(Dig6, aes(x=Time, y= HR2))+
 
 COMPROBACION DE OUTLIERS MHR
 ```{r}
+reglahampel <- function(x) { 
+  mu <- median(x,na.rm=T)
+  sigma <- mad(x,na.rm=T)
+  t <- abs(x-mu)
+  a <- ifelse(t > (3*sigma), TRUE, FALSE)
+  return(a)
+}
 outliers1 <- reglaboxplot(Dig1$MHR)
 outliers2 <- reglaboxplot(Dig2$MHR)
 outliers5 <- reglaboxplot(Dig5$MHR)
@@ -538,7 +545,34 @@ VARIABLE TOCO:
 Una vez los datos han sido analizados y los outliers, es un buen momento para 
 buscar relaciones que nos permitan obtener conclusiones
 ```{r}
-#Relacion entre TOCO y HR1 
-cor(Dig1$HR1,Dig1$TOCO)
+#Matrices de correlacion de cada variable
+Dig1_filtrado <- Dig1[, !apply(Dig1, 2, function(x) all(x == 0))]
+Dig2_filtrado <- Dig2[, !apply(Dig2, 2, function(x) all(x == 0))]
+Dig3_filtrado <- Dig3[, !apply(Dig3, 2, function(x) all(x == 0))]
+Dig4_filtrado <- Dig4[, !apply(Dig4, 2, function(x) all(x == 0))]
+Dig5_filtrado <- Dig5[, !apply(Dig5, 2, function(x) all(x == 0))]
+Dig6_filtrado <- Dig6[, !apply(Dig6, 2, function(x) all(x == 0))]
+
+Dig1_filtrado_sd <- Dig1[, !apply(Dig1, 2, function(x) all(sd(x) == 0))]
+Dig2_filtrado_sd <- Dig2[, !apply(Dig2, 2, function(x) all(sd(x) == 0))]
+Dig3_filtrado_sd <- Dig3[, !apply(Dig3, 2, function(x) all(sd(x) == 0))]
+Dig4_filtrado_sd <- Dig4[, !apply(Dig4, 2, function(x) all(sd(x) == 0))]
+Dig5_filtrado_sd <- Dig5[, !apply(Dig5, 2, function(x) all(sd(x) == 0))]
+Dig6_filtrado_sd <- Dig6[, !apply(Dig6, 2, function(x) all(sd(x) == 0))]
+
+
+Cor1<-cor(Dig1_filtrado_sd)
+Cor2<-cor(Dig2_filtrado_sd)
+Cor3<-cor(Dig3_filtrado_sd)
+Cor4<-cor(Dig4_filtrado_sd)
+Cor5<-cor(Dig5_filtrado_sd)
+Cor6<-cor(Dig6_filtrado_sd)
+
+corrplot(Cor1, method = "number")
+corrplot(Cor2, method = "number")
+corrplot(Cor3, method = "number")
+corrplot(Cor4, method = "number")
+corrplot(Cor5, method = "number")
+corrplot(Cor6, method = "number")
 ```
 
