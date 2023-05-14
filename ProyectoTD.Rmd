@@ -183,8 +183,6 @@ Dig6<-crear_df_digital(Dig6)
 
 GRAFICA DEL EJEMPLO
 ```{r}
-library(ggplot2)
-library(plotly)
 
 ult_An <- tail(An1, n = 10000)
 t <- 1:length(An1)
@@ -233,12 +231,6 @@ Dig5_L <- Data_frame_largo(Dig5)
 Dig6_L <- Data_frame_largo(Dig6)  
 
          
-ggplot(Dig1_L, aes(x = time, y = value)) + 
-  geom_line()+ 
-  facet_wrap(~ variable, scales = "free_y") 
-ggplot(Dig2_L, aes(x = time, y = value)) + 
-  geom_line()+ 
-  facet_wrap(~ variable, scales = "free_y") 
 ``` 
 
 GRAFICAS DE CADA FICHERO DIGITAL 
@@ -453,5 +445,100 @@ ggplot(Dig6, aes(x = Time)) +
 
 #Como se puede comprobar el ritmo cardiaco del feto es ampliamente superior en
 #la mayoría de los casos al de la madre.
+```
+
+COMPROBACION OUTLIERS PSI PME Y PDI
+```{r}
+#Viendo las gráficas, se puede ver que solo hay valores de PSI, PME Y PDI para
+#el primer y segundo paciente. Además se observa que los valores son muy similares
+#Para ello voy a utilizar la funcion unique para ver cuantos valores hay en cada
+#y ver que hacer con ello.
+
+unique(Dig1$PSI)
+unique(Dig1$PDI)
+unique(Dig1$PME)
+unique(Dig2$PME)
+unique(Dig2$PSI)
+unique(Dig2$PDI)
+#Al haber tan pocos valores y ser tan similares, podemos tomarnos la licencia de
+#sustituir los ceros por el valor medio de los datos.
+Dig1$PSI <- ifelse(Dig1$PSI == 0, round(mean(Dig1$PSI[Dig1$PSI != 0],0)), Dig1$PSI)
+Dig2$PSI <- ifelse(Dig2$PSI == 0, round(mean(Dig2$PSI[Dig1$PSI != 0],0)), Dig2$PSI)
+
+Dig1$PDI <- ifelse(Dig1$PDI == 0, round(mean(Dig1$PDI[Dig1$PDI != 0],0)), Dig1$PDI)
+Dig2$PDI <- ifelse(Dig2$PDI == 0, round(mean(Dig2$PDI[Dig2$PDI != 0],0)), Dig2$PDI)
+
+Dig1$PME <- ifelse(Dig1$PME == 0, round(mean(Dig1$PME[Dig1$PME != 0],0)), Dig1$PME)
+Dig2$PME <- ifelse(Dig2$PME == 0, round(mean(Dig2$PME[Dig2$PME != 0],0)), Dig2$PME)
+
+
+ggplot(Dig1, aes(x=Time,y=PSI))+
+  geom_line()+ 
+  scale_y_continuous(limits = c(0,160))
+
+ggplot(Dig2, aes(x=Time,y=PSI))+
+  geom_line()+ 
+  scale_y_continuous(limits = c(0,160))
+
+
+ggplot(Dig1, aes(x = Time, y = PDI)) +
+  geom_line()+ 
+  scale_y_continuous(limits = c(0,120))
+
+ggplot(Dig2, aes(x = Time, y = PDI)) +
+  geom_line()+
+  scale_y_continuous(limits = c(0,120))
+
+
+ggplot(Dig1, aes(x = Time, y = PME)) +
+  geom_line()+ 
+  scale_y_continuous(limits = c(0,120))
+
+
+ggplot(Dig2, aes(x = Time, y = PME)) +
+  geom_line()+ 
+  scale_y_continuous(limits = c(0,120))
+
+
+```
+
+DE FORMA SIMILAR CON LA SATURACION DE OXIGENO:
+```{r}
+unique(Dig1$SPO2)
+unique(Dig2$SPO2)
+unique(Dig5$SPO2)
+unique(Dig6$SPO2)
+
+Dig1$SPO2 <- ifelse(Dig1$SPO2 == 0, round(mean(Dig1$SPO2[Dig1$SPO2 != 0],0)), Dig1$SPO2)
+Dig2$SPO2 <- ifelse(Dig2$SPO2 == 0, round(mean(Dig2$SPO2[Dig2$SPO2 != 0],0)), Dig2$SPO2)
+Dig5$SPO2 <- ifelse(Dig5$SPO2 == 0, round(mean(Dig5$SPO2[Dig5$SPO2 != 0],0)), Dig5$SPO2)
+Dig6$SPO2 <- ifelse(Dig6$SPO2 == 0, round(mean(Dig6$SPO2[Dig6$SPO2 != 0],0)), Dig6$SPO2)
+
+ggplot(Dig1,aes(x=Time, y=SPO2))+
+  geom_line()
+ggplot(Dig2,aes(x=Time, y=SPO2))+
+  geom_line()
+ggplot(Dig5,aes(x=Time, y=SPO2))+
+  geom_line()
+ggplot(Dig6,aes(x=Time, y=SPO2))+
+  geom_line()
+```
+
+VARIABLE TOCO:
+```{r}
+#Esta variable mide la actividad uterina en mmHg, con lo cual es posible que los
+#outliers no sean valores erróneos, sino momentos en los que hubo más presión
+#ya que en los partos hay mucha presión, por lo que consideramos que no es 
+#necesario cambiarlos.
+
+
+```
+
+
+Una vez los datos han sido analizados y los outliers, es un buen momento para 
+buscar relaciones que nos permitan obtener conclusiones
+```{r}
+#Relacion entre TOCO y HR1 
+cor(Dig1$HR1,Dig1$TOCO)
 ```
 
