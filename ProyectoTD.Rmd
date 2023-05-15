@@ -397,9 +397,15 @@ outliers6 <- reglaboxplot(Dig6$MHR)
 
 
 Dig1$MHR[outliers1 | Dig1$MHR == 0]  <- NA
+Dig2$MHR[outliers2 | Dig2$MHR == 0]  <- NA
+Dig6$MHR[outliers6 | Dig6$MHR == 0]  <- NA
+
 prueba <- mice(Dig1)
 Dig1<- complete(prueba)
-
+prueba <- mice(Dig2)
+Dig2<- complete(prueba)
+prueba <- mice(Dig6)
+Dig6<- complete(prueba)
 
 ggplot(Dig1, aes(x=Time, y= MHR))+
   geom_line()
@@ -563,4 +569,18 @@ corrplot(Cor4, method = "number")
 corrplot(Cor5, method = "number")
 corrplot(Cor6, method = "number")
 ```
+
+```{r}
+mean(Dig1$HR1)
+mean(Dig2$HR1)
+Dig3<- rbind(Dig3,Dig4)
+mean(Dig3$HR1)
+Dig5<- rbind(Dig5,Dig6)
+mean(Dig5$HR1)
+
+mean(Dig1$MHR)
+mean(Dig2$MHR)
+mean(Dig3$MHR)
+mean(Dig5$MHR)
+x```
 
