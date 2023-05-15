@@ -370,7 +370,9 @@ Dig1$HR2 <- na.locf(Dig1$HR2)
 
 Dig5$HR2[outliers5] <- NA
 Dig5$HR2 <- na.fill(Dig5$HR2, fill = "extend")
-Dig6$HR2[outliers6] <- NA
+Dig6$HR2[outliers6| Dig6$HR2 == 0] <- NA
+prueba <- mice(Dig6, m=10)
+Dig6<- complete(prueba)
 Dig6$HR2 <- na.locf(Dig6$HR2)
 
 
@@ -387,26 +389,17 @@ ggplot(Dig6, aes(x=Time, y= HR2))+
 
 COMPROBACION DE OUTLIERS MHR
 ```{r}
-reglahampel <- function(x) { 
-  mu <- median(x,na.rm=T)
-  sigma <- mad(x,na.rm=T)
-  t <- abs(x-mu)
-  a <- ifelse(t > (3*sigma), TRUE, FALSE)
-  return(a)
-}
+
 outliers1 <- reglaboxplot(Dig1$MHR)
 outliers2 <- reglaboxplot(Dig2$MHR)
 outliers5 <- reglaboxplot(Dig5$MHR)
 outliers6 <- reglaboxplot(Dig6$MHR)
 
-Dig1$MHR[outliers1] <- NA
-Dig1$MHR <- na.locf(Dig1$MHR)
-Dig2$MHR[outliers2] <- NA
-Dig2$MHR <- na.locf(Dig2$MHR)
-Dig5$MHR[outliers5] <- NA
-Dig5$MHR <- na.fill(Dig5$MHR, fill = "extend")
-Dig6$MHR[outliers6] <- NA
-Dig6$MHR <- na.locf(Dig6$MHR)
+
+Dig1$MHR[outliers1 | Dig1$MHR == 0]  <- NA
+prueba <- mice(Dig1)
+Dig1<- complete(prueba)
+
 
 ggplot(Dig1, aes(x=Time, y= MHR))+
   geom_line()
