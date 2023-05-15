@@ -539,12 +539,7 @@ Una vez los datos han sido analizados y los outliers, es un buen momento para
 buscar relaciones que nos permitan obtener conclusiones
 ```{r}
 #Matrices de correlacion de cada variable
-Dig1_filtrado <- Dig1[, !apply(Dig1, 2, function(x) all(x == 0))]
-Dig2_filtrado <- Dig2[, !apply(Dig2, 2, function(x) all(x == 0))]
-Dig3_filtrado <- Dig3[, !apply(Dig3, 2, function(x) all(x == 0))]
-Dig4_filtrado <- Dig4[, !apply(Dig4, 2, function(x) all(x == 0))]
-Dig5_filtrado <- Dig5[, !apply(Dig5, 2, function(x) all(x == 0))]
-Dig6_filtrado <- Dig6[, !apply(Dig6, 2, function(x) all(x == 0))]
+
 
 Dig1_filtrado_sd <- Dig1[, !apply(Dig1, 2, function(x) all(sd(x) == 0))]
 Dig2_filtrado_sd <- Dig2[, !apply(Dig2, 2, function(x) all(sd(x) == 0))]
